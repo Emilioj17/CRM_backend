@@ -30,7 +30,7 @@ def users(id = None):
         else:
             users = User.query.all()
             users = list(map(lambda user: user.serialize(), users))
-            return jsonify(users.serialize()), 200
+            return jsonify(users), 200
     elif request.method == 'POST':
         name = request.json.get('name')
         last_name = request.json.get('last_name')
@@ -73,9 +73,9 @@ def users(id = None):
         return jsonify({ "success": "User deleted"}), 200
     
 
-@app.route('/api/contact', methods=['GET', 'POST'])
-@app.route('/api/contact/<int:id>', methods=['GET', 'PUT', 'DELETE'])
-def users(id = None):
+@app.route('/api/contacts', methods=['GET', 'POST'])
+@app.route('/api/contacts/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+def contacts(id = None):
 
     if request.method == 'GET':
         if id != None:
@@ -84,7 +84,7 @@ def users(id = None):
         else:
             contacts = Contact.query.all()
             contacts = list(map(lambda contact: contact.serialize(), contacts))
-            return jsonify(contacts.serialize()), 200
+            return jsonify(contacts), 200
 
     elif request.method == 'POST':
         name = request.json.get('name')
@@ -149,7 +149,7 @@ def notes(id = None):
         else:
             notes = Note.query.all()
             notes = list(map(lambda note: note.serialize(), notes))
-            return jsonify(notes.serialize()), 200
+            return jsonify(notes), 200
 
     elif request.method == 'POST':
         comment = request.json.get('comment')
@@ -198,7 +198,7 @@ def deals(id = None):
         else:
             deals = Note.query.all()
             deals = list(map(lambda deal: deal.serialize(), deals))
-            return jsonify(deals.serialize()), 200
+            return jsonify(deals), 200
 
     elif request.method == 'POST':
         name = request.json.get('name')
