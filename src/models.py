@@ -102,7 +102,7 @@ class Contact(db.Model):
     
 
 class Note(db.Model):
-    __tablename__ = 'contacts'
+    __tablename__ = 'notes'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text, nullable=False)
     create_at = db.Column(db.DATE, nullable=False)
