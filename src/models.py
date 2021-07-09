@@ -8,6 +8,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
+    rut = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     create_at = db.Column(db.DATE, nullable=False)
@@ -20,6 +21,7 @@ class User(db.Model):
             "id": self.id,
             "name": self.name,
             "last_name": self.last_name,
+            "rut": self.rut,
             "phone": self.phone,
             "email": self.email,
             "create_at": self.create_at,
@@ -58,6 +60,7 @@ class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
+    rut = db.Column(db.String(100), nullable=False)
     type = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
@@ -71,6 +74,7 @@ class Contact(db.Model):
             "id": self.id,
             "name": self.name,
             "last_name": self.last_name,
+            "rut": self.rut,
             "type": self.type,
             "phone": self.phone,
             "email": self.email,
