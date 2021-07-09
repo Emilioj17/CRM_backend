@@ -25,11 +25,10 @@ class User(db.Model):
             "phone": self.phone,
             "email": self.email,
             "create_at": self.create_at,
-            "contacts": self.get_contacts, 
-            "notes": self.get_notes(),
+            "contacts": self.get_contacts(), 
+            "deals": self.get_deals(),
             "notes": self.get_notes()
         }
-
 
     def save(self):
         db.session.add(self)

@@ -31,13 +31,14 @@ def users(id = None):
             users = User.query.all()
             users = list(map(lambda user: user.serialize(), users))
             return jsonify(users), 200
+            
     elif request.method == 'POST':
         name = request.json.get('name')
         last_name = request.json.get('last_name')
         rut = request.json.get('rut')
         phone = request.json.get('phone')
         email = request.json.get('email')
-        create_at = datetime.datetime.now()
+        create_at = datetime.now()
 
         user = User()
         user.name = name
@@ -46,6 +47,8 @@ def users(id = None):
         user.phone = phone
         user.email = email
         user.create_at = create_at
+
+
 
         user.save()
 
@@ -93,7 +96,7 @@ def contacts(id = None):
         type = request.json.get('type')
         phone = request.json.get('phone')
         email = request.json.get('email')
-        create_at = datetime.datetime.now()
+        create_at = datetime.now()
         user_id = request.json.get('user_id')
 
         contact = Contact()
@@ -153,7 +156,7 @@ def notes(id = None):
 
     elif request.method == 'POST':
         comment = request.json.get('comment')
-        create_at = datetime.datetime.now()
+        create_at = datetime.now()
         user_id = request.json.get('user_id')
         contact_id = request.json.get('contact_id')
 
@@ -203,7 +206,7 @@ def deals(id = None):
     elif request.method == 'POST':
         name = request.json.get('name')
         description = request.json.get('description')
-        create_at = datetime.datetime.now()
+        create_at = datetime.now()
         user_id = request.json.get('user_id')
         contact_id = request.json.get('contact_id')
 
