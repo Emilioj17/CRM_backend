@@ -1,5 +1,6 @@
 from datetime import datetime
 import json
+from flask_cors import CORS
 from flask import Flask
 from flask import jsonify
 from flask import request
@@ -8,6 +9,7 @@ from flask_migrate import Migrate
 from models import Contact, Deal, Note, User, db
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db.init_app(app)
@@ -47,12 +49,11 @@ def users(id = None):
         user.phone = phone
         user.email = email
         user.create_at = create_at
-
-
-
+        
         user.save()
 
         return jsonify(user.serialize()), 201
+
     elif request.method == 'PUT':
         name = request.json.get('name')
         last_name = request.json.get('last_name')
@@ -70,6 +71,7 @@ def users(id = None):
         user.update()
 
         return jsonify(user.serialize()), 201
+
     elif request.method == 'DELETE':
         user = User.query.get(id)
         user.delete()
