@@ -137,7 +137,8 @@ class Note(db.Model):
 class Deal(db.Model):
     __tablename__ = 'deals'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
+    plan = db.Column(db.String, nullable=False)
+    duration = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
     create_at = db.Column(db.DATE, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
@@ -146,7 +147,8 @@ class Deal(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name,
+            "plan": self.plan,
+            "duration": self.duration,
             "description": self.description,
             "create_at": self.create_at,
             "user_id": self.user_id,

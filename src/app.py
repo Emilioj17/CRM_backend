@@ -201,19 +201,21 @@ def deals(id = None):
             deal = Deal.query.get(id)
             return jsonify(deal.serialize()), 200
         else:
-            deals = Note.query.all()
+            deals = Deal.query.all()
             deals = list(map(lambda deal: deal.serialize(), deals))
             return jsonify(deals), 200
 
     elif request.method == 'POST':
-        name = request.json.get('name')
+        plan = request.json.get('plan')
+        duration = request.json.get('duration')
         description = request.json.get('description')
         create_at = datetime.now()
         user_id = request.json.get('user_id')
         contact_id = request.json.get('contact_id')
 
         deal = Deal()
-        deal.name = name
+        deal.plan = plan
+        deal.duration = duration
         deal.description = description
         deal.create_at = create_at
         deal.user_id = user_id
@@ -224,13 +226,15 @@ def deals(id = None):
         return jsonify(deal.serialize()), 201
 
     elif request.method == 'PUT':
-        name = request.json.get('name')
+        plan = request.json.get('plan')
+        duration = request.json.get('duration')
         description = request.json.get('description')
         user_id = request.json.get('user_id')
         contact_id = request.json.get('contact_id')
 
         deal = Deal.query.get(id)
-        deal.name = name
+        deal.plan = plan
+        deal.duration = duration
         deal.description = description
         deal.user_id = user_id
         deal.contact_id = contact_id
