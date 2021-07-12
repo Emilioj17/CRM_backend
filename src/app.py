@@ -60,7 +60,7 @@ def users(id = None):
         phone = request.json.get('phone')
         email = request.json.get('email')
 
-        user = User()
+        user = User.query.get(id)
         user.name = name
         user.last_name = last_name
         user.rut = rut
@@ -122,7 +122,7 @@ def contacts(id = None):
         email = request.json.get('email')
         user_id = request.json.get('user_id')
 
-        contact = Contact()
+        contact = Contact.query.get(id)
         contact.name = name
         contact.last_name = last_name
         contact.rut = rut
@@ -175,7 +175,7 @@ def notes(id = None):
         user_id = request.json.get('user_id')
         contact_id = request.json.get('contact_id')
 
-        note = Note()
+        note = Note.query.get(id)
         note.comment = comment
         note.user_id = user_id
         note.contact_id = contact_id
@@ -227,7 +227,7 @@ def deals(id = None):
         user_id = request.json.get('user_id')
         contact_id = request.json.get('contact_id')
 
-        deal = Deal()
+        deal = Deal.query.get(id)
         deal.name = name
         deal.description = description
         deal.user_id = user_id
