@@ -2,17 +2,19 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
     rut = db.Column(db.String(100), nullable=False)
+    type = db.Column(db.String(100), nullable=False)
+    estado = db.Column(db.String(100), default='Activo')
     phone = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     create_at = db.Column(db.DATE, nullable=False)
-    contacts = db.relationship('Contact', cascade='all, delete', backref='user')
+    contacts = db.relationship(
+        'Contact', cascade='all, delete', backref='user')
     deals = db.relationship('Deal', cascade='all, delete', backref='user')
     notes = db.relationship('Note', cascade='all, delete', backref='user')
 
@@ -22,10 +24,12 @@ class User(db.Model):
             "name": self.name,
             "last_name": self.last_name,
             "rut": self.rut,
+            "type": self.type,
+            "estado": self.estado,
             "phone": self.phone,
             "email": self.email,
             "create_at": self.create_at,
-            "contacts": self.get_contacts(), 
+            "contacts": self.get_contacts(),
             "deals": self.get_deals(),
             "notes": self.get_notes()
         }
@@ -42,7 +46,8 @@ class User(db.Model):
         db.session.commit()
 
     def get_contacts(self):
-        contacts = list(map(lambda contact: contact.serialize(), self.contacts))
+        contacts = list(
+            map(lambda contact: contact.serialize(), self.contacts))
         return contacts
 
     def get_notes(self):
@@ -64,7 +69,8 @@ class Contact(db.Model):
     phone = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     create_at = db.Column(db.DATE, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id', ondelete='CASCADE'))
     notes = db.relationship('Note', cascade='all, delete', backref='contact')
     deals = db.relationship('Deal', cascade='all, delete', backref='contact')
 
@@ -83,7 +89,6 @@ class Contact(db.Model):
             "deals": self.get_deals()
         }
 
-
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -98,19 +103,21 @@ class Contact(db.Model):
     def get_notes(self):
         notes = list(map(lambda note: note.serialize(), self.notes))
         return notes
-    
+
     def get_deals(self):
         deals = list(map(lambda deal: deal.serialize(), self.deals))
         return deals
-    
+
 
 class Note(db.Model):
     __tablename__ = 'notes'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text, nullable=False)
     create_at = db.Column(db.DATE, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
-    contact_id = db.Column(db.Integer, db.ForeignKey('contacts.id', ondelete='CASCADE'))
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id', ondelete='CASCADE'))
+    contact_id = db.Column(db.Integer, db.ForeignKey(
+        'contacts.id', ondelete='CASCADE'))
 
     def serialize(self):
         return {
@@ -120,7 +127,6 @@ class Note(db.Model):
             "user_id": self.user_id,
             "contact_id": self.contact_id
         }
-
 
     def save(self):
         db.session.add(self)
@@ -141,8 +147,10 @@ class Deal(db.Model):
     duration = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
     create_at = db.Column(db.DATE, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
-    contact_id = db.Column(db.Integer, db.ForeignKey('contacts.id', ondelete='CASCADE'))
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id', ondelete='CASCADE'))
+    contact_id = db.Column(db.Integer, db.ForeignKey(
+        'contacts.id', ondelete='CASCADE'))
 
     def serialize(self):
         return {
@@ -154,7 +162,6 @@ class Deal(db.Model):
             "user_id": self.user_id,
             "contact_id": self.contact_id
         }
-
 
     def save(self):
         db.session.add(self)
