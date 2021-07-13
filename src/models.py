@@ -24,7 +24,7 @@ class User(db.Model):
             "rut": self.rut,
             "phone": self.phone,
             "email": self.email,
-            "create_at": self.create_at,
+            "create_at": self.formatDate(),
             "contacts": self.get_contacts(), 
             "deals": self.get_deals(),
             "notes": self.get_notes()
@@ -44,6 +44,10 @@ class User(db.Model):
     def get_contacts(self):
         contacts = list(map(lambda contact: contact.serialize(), self.contacts))
         return contacts
+
+    def formatDate(self):
+        date = self.create_at.strftime("%d/%m/%Y")
+        return date
 
     def get_notes(self):
         notes = list(map(lambda note: note.serialize(), self.notes))
@@ -77,7 +81,7 @@ class Contact(db.Model):
             "type": self.type,
             "phone": self.phone,
             "email": self.email,
-            "create_at": self.create_at,
+            "create_at": self.formatDate(),
             "user_id": self.user_id,
             "notes": self.get_notes(),
             "deals": self.get_deals()
@@ -94,6 +98,10 @@ class Contact(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def formatDate(self):
+        date = self.create_at.strftime("%d/%m/%Y")
+        return date
 
     def get_notes(self):
         notes = list(map(lambda note: note.serialize(), self.notes))
@@ -116,7 +124,7 @@ class Note(db.Model):
         return {
             "id": self.id,
             "name": self.comment,
-            "create_at": self.create_at,
+            "create_at": self.formatDate(),
             "user_id": self.user_id,
             "contact_id": self.contact_id
         }
@@ -132,6 +140,10 @@ class Note(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def formatDate(self):
+        date = self.create_at.strftime("%d/%m/%Y")
+        return date
 
 
 class Deal(db.Model):
@@ -150,7 +162,7 @@ class Deal(db.Model):
             "plan": self.plan,
             "duration": self.duration,
             "description": self.description,
-            "create_at": self.create_at,
+            "create_at": self.formatDate(),
             "user_id": self.user_id,
             "contact_id": self.contact_id
         }
@@ -166,3 +178,7 @@ class Deal(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def formatDate(self):
+        date = self.create_at.strftime("%d/%m/%Y")
+        return date
