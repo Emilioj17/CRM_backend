@@ -123,7 +123,7 @@ class Note(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.comment,
+            "comment": self.comment,
             "create_at": self.formatDate(),
             "user_id": self.user_id,
             "contact_id": self.contact_id
