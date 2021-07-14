@@ -22,29 +22,37 @@ def main():
 
 
 @app.route('/login', methods=['GET'])
+def actual_login():
+    users = User.query.all()
+    users = list(map(lambda user: user.serialize(), users))
+    return jsonify(users), 200
 
 
 @app.route('/registro', methods=['POST'])
 def create_acount():
     name = request.json.get('nameReg')
-    lastname = request.json.get('lastnameReg')
+    last_name = request.json.get('lastnameReg')
     phone = request.json.get('phoneReg')
     email = request.json.get('emailReg')
     password = request.json.get('passwordReg')
+    create_at = datetime.now()
 
     user = User()
     user.name = name
-    user.lastname = lastname
+    user.last_name = last_name
     user.phone = phone
     user.email = email
     user.password = password
+    user.create_at = create_at
 
     user.save()
+
+    return jsonify(user.serialize), 201
 
 
 @app.route('/api/users', methods=['GET', 'POST'])
 @app.route('/api/users/<int:id>', methods=['GET', 'PUT', 'DELETE'])
-def users(id = None):
+def users(id=None):
 
     if request.method == 'GET':
         if id != None:
@@ -54,23 +62,27 @@ def users(id = None):
             users = User.query.all()
             users = list(map(lambda user: user.serialize(), users))
             return jsonify(users), 200
-            
+
     elif request.method == 'POST':
         name = request.json.get('name')
         last_name = request.json.get('last_name')
         rut = request.json.get('rut')
+        type = request.json.get('type')
         phone = request.json.get('phone')
         email = request.json.get('email')
+        password = request.json.get('password')
         create_at = datetime.now()
 
         user = User()
         user.name = name
         user.last_name = last_name
         user.rut = rut
+        user.password = password
+        user.type = type
         user.phone = phone
         user.email = email
         user.create_at = create_at
-        
+
         user.save()
 
         return jsonify(user.serialize()), 201
@@ -79,6 +91,8 @@ def users(id = None):
         name = request.json.get('name')
         last_name = request.json.get('last_name')
         rut = request.json.get('rut')
+        type = request.json.get('type')
+        estado = request.json.get('estado')
         phone = request.json.get('phone')
         email = request.json.get('email')
 
@@ -86,6 +100,8 @@ def users(id = None):
         user.name = name
         user.last_name = last_name
         user.rut = rut
+        user.type = type
+        user.estado = estado
         user.phone = phone
         user.email = email
 
@@ -96,12 +112,12 @@ def users(id = None):
     elif request.method == 'DELETE':
         user = User.query.get(id)
         user.delete()
-        return jsonify({ "success": "User deleted"}), 200
-    
+        return jsonify({"success": "User deleted"}), 200
+
 
 @app.route('/api/contacts', methods=['GET', 'POST'])
 @app.route('/api/contacts/<int:id>', methods=['GET', 'PUT', 'DELETE'])
-def contacts(id = None):
+def contacts(id=None):
 
     if request.method == 'GET':
         if id != None:
@@ -168,13 +184,13 @@ def contacts(id = None):
     elif request.method == 'DELETE':
         contact = Contact.query.get(id)
         contact.delete()
-        return jsonify({ "success": "Contact deleted"}), 200
+        return jsonify({"success": "Contact deleted"}), 200
 
 
 @app.route('/api/notes', methods=['GET', 'POST'])
 @app.route('/api/notes/<int:id>', methods=['GET', 'PUT', 'DELETE'])
-def notes(id = None):
-    
+def notes(id=None):
+
     if request.method == 'GET':
         if id != None:
             note = Note.query.get(id)
@@ -217,13 +233,13 @@ def notes(id = None):
     elif request.method == 'DELETE':
         note = Note.query.get(id)
         note.delete()
-        return jsonify({ "success": "Note deleted"}), 200
+        return jsonify({"success": "Note deleted"}), 200
 
 
 @app.route('/api/deals', methods=['GET', 'POST'])
 @app.route('/api/deals/<int:id>', methods=['GET', 'PUT', 'DELETE'])
-def deals(id = None):
-    
+def deals(id=None):
+
     if request.method == 'GET':
         if id != None:
             deal = Deal.query.get(id)
@@ -274,7 +290,8 @@ def deals(id = None):
     elif request.method == 'DELETE':
         deal = Deal.query.get(id)
         deal.delete()
-        return jsonify({ "success": "Deal deleted"}), 200
+        return jsonify({"success": "Deal deleted"}), 200
+
 
 if __name__ == '__main__':
     app.run()
