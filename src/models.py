@@ -7,10 +7,11 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False, unique=True)
+    password = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
     rut = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), nullable=False, unique=True)
     create_at = db.Column(db.DATE, nullable=False)
     contacts = db.relationship('Contact', cascade='all, delete', backref='user')
     deals = db.relationship('Deal', cascade='all, delete', backref='user')
