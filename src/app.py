@@ -21,6 +21,27 @@ def main():
     return render_template('index.html')
 
 
+@app.route('/login', methods=['GET'])
+
+
+@app.route('/registro', methods=['POST'])
+def create_acount():
+    name = request.json.get('nameReg')
+    lastname = request.json.get('lastnameReg')
+    phone = request.json.get('phoneReg')
+    email = request.json.get('emailReg')
+    password = request.json.get('passwordReg')
+
+    user = User()
+    user.name = name
+    user.lastname = lastname
+    user.phone = phone
+    user.email = email
+    user.password = password
+
+    user.save()
+
+
 @app.route('/api/users', methods=['GET', 'POST'])
 @app.route('/api/users/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def users(id = None):
