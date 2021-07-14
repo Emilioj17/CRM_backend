@@ -36,14 +36,14 @@ def actual_login():
 @app.route('/registro', methods=['POST'])
 def create_acount():
     name = request.json.get('nameReg')
-    lastname = request.json.get('lastnameReg')
+    last_name = request.json.get('lastnameReg')
     phone = request.json.get('phoneReg')
     email = request.json.get('emailReg')
     password = request.json.get('passwordReg')
 
     user = User()
     user.name = name
-    user.lastname = lastname
+    user.last_name = last_name
     user.phone = phone
     user.email = email
     user.password = password
@@ -73,12 +73,14 @@ def users(id=None):
         type = request.json.get('type')
         phone = request.json.get('phone')
         email = request.json.get('email')
+        password = request.json.get('password')
         create_at = datetime.now()
 
         user = User()
         user.name = name
         user.last_name = last_name
         user.rut = rut
+        user.password = password
         user.type = type
         user.phone = phone
         user.email = email
