@@ -146,13 +146,20 @@ def contacts(id = None):
         user_id = request.json.get('user_id')
 
         contact = Contact.query.get(id)
-        contact.name = name
-        contact.last_name = last_name
-        contact.rut = rut
-        contact.type = type
-        contact.phone = phone
-        contact.email = email
-        contact.user_id = user_id
+        if name != None:
+            contact.name = name
+        if last_name != None:
+            contact.last_name = last_name
+        if rut != None:
+            contact.rut = rut
+        if type != None:
+            contact.type = type
+        if phone != None:
+            contact.phone = phone
+        if email != None:
+            contact.email = email
+        if user_id != None:
+            contact.user_id = user_id
 
         contact.update()
 
@@ -197,7 +204,7 @@ def notes(id = None):
         comment = request.json.get('comment')
         user_id = request.json.get('user_id')
         contact_id = request.json.get('contact_id')
-
+    
         note = Note.query.get(id)
         note.comment = comment
         note.user_id = user_id
