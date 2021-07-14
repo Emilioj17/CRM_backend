@@ -23,14 +23,9 @@ def main():
 
 @app.route('/login', methods=['GET'])
 def actual_login():
-    email = request.json.get('email')
-    password = request.json.get('password')
-
-    user = User()
-    user.email = email
-    user.password = password
-
-    return jsonify(user), 200
+    users = User.query.all()
+    users = list(map(lambda user: user.serialize(), users))
+    return jsonify(users), 200
 
 
 @app.route('/registro', methods=['POST'])
@@ -40,6 +35,7 @@ def create_acount():
     phone = request.json.get('phoneReg')
     email = request.json.get('emailReg')
     password = request.json.get('passwordReg')
+    create_at = datetime.now()
 
     user = User()
     user.name = name
@@ -47,6 +43,7 @@ def create_acount():
     user.phone = phone
     user.email = email
     user.password = password
+    user.create_at = create_at
 
     user.save()
 
