@@ -12,6 +12,7 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 from werkzeug.security import check_password_hash, generate_password_hash
+from Send_Email import sendEmail
 
 app = Flask(__name__)
 CORS(app)
@@ -26,6 +27,20 @@ jwt = JWTManager(app)
 @app.route('/')
 def main():
     return render_template('index.html')
+
+
+@app.route('/enviarCorreo', methods=['POST'])
+def enviar():
+    request_body = request.data
+    decoded_object = json.loads(request_body)
+    to = decoded_object["to"]
+    Cc = decoded_object["Cc"]
+    subject = decoded_object["subject"]
+    body = decoded_object["body"]
+
+    sendEmail(to, Cc, subject, body)
+
+    return jsonify("Prueba Correcta"), 201
 
 
 @app.route('/login', methods=['POST'])
@@ -127,7 +142,7 @@ def users(id=None):
         if email != None:
             user.email = email
         if password != None:
-            user.password =password
+            user.password = password
 
         user.update()
 
@@ -244,7 +259,7 @@ def notes(id=None):
         comment = request.json.get('comment')
         user_id = request.json.get('user_id')
         contact_id = request.json.get('contact_id')
-    
+
         note = Note.query.get(id)
         if comment != None:
             note.comment = comment
