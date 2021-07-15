@@ -7,6 +7,11 @@ from flask import request
 from flask import render_template
 from flask_migrate import Migrate
 from models import Contact, Deal, Note, User, db
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 CORS(app)
@@ -14,6 +19,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db.init_app(app)
 Migrate(app, db)
+app.config["JWT_SECRET_KEY"] = "@alfa123@254alfacentaurizxcvbnm@123456789ASDFGHJKL"
+jwt = JWTManager(app)
 
 
 @app.route('/')
@@ -21,11 +28,18 @@ def main():
     return render_template('index.html')
 
 
-@app.route('/login', methods=['GET'])
-def actual_login():
-    users = User.query.all()
-    users = list(map(lambda user: user.serialize(), users))
-    return jsonify(users), 200
+@app.route('/login', methods=['POST'])
+def login_usuario():
+    request_body = request.data
+    decoded_object = json.loads(request_body)
+    email = decoded_object["email"]
+    password = decoded_object["password"]
+    user = User.query.filter(email == User.email).first()
+    if user is not None and check_password_hash(user.password, password):
+        token = create_access_token(identity=password)
+        return jsonify(user.name, token), 200
+    else:
+        return jsonify({"Error": "Clave o Usuario incorrecto"}), 401
 
 
 @app.route('/registro', methods=['POST'])
@@ -77,7 +91,7 @@ def users(id=None):
         user.name = name
         user.last_name = last_name
         user.rut = rut
-        user.password = password
+        user.password = generate_password_hash(password)
         user.type = type
         user.phone = phone
         user.email = email
