@@ -109,15 +109,25 @@ def users(id=None):
         estado = request.json.get('estado')
         phone = request.json.get('phone')
         email = request.json.get('email')
+        password = request.json.get('password')
 
         user = User.query.get(id)
-        user.name = name
-        user.last_name = last_name
-        user.rut = rut
-        user.type = type
-        user.estado = estado
-        user.phone = phone
-        user.email = email
+        if name != None:
+            user.name = name
+        if last_name != None:
+            user.last_name = last_name
+        if rut != None:
+            user.rut = rut
+        if type != None:
+            user.type = type
+        if estado != None:
+            user.estado = estado
+        if phone != None:
+            user.phone = phone
+        if email != None:
+            user.email = email
+        if password != None:
+            user.password =password
 
         user.update()
 
@@ -176,13 +186,20 @@ def contacts(id=None):
         user_id = request.json.get('user_id')
 
         contact = Contact.query.get(id)
-        contact.name = name
-        contact.last_name = last_name
-        contact.rut = rut
-        contact.type = type
-        contact.phone = phone
-        contact.email = email
-        contact.user_id = user_id
+        if name != None:
+            contact.name = name
+        if last_name != None:
+            contact.last_name = last_name
+        if rut != None:
+            contact.rut = rut
+        if type != None:
+            contact.type = type
+        if phone != None:
+            contact.phone = phone
+        if email != None:
+            contact.email = email
+        if user_id != None:
+            contact.user_id = user_id
 
         contact.update()
 
@@ -227,11 +244,14 @@ def notes(id=None):
         comment = request.json.get('comment')
         user_id = request.json.get('user_id')
         contact_id = request.json.get('contact_id')
-
+    
         note = Note.query.get(id)
-        note.comment = comment
-        note.user_id = user_id
-        note.contact_id = contact_id
+        if comment != None:
+            note.comment = comment
+        if user_id != None:
+            note.user_id = user_id
+        if contact_id != None:
+            note.contact_id = contact_id
 
         note.update()
 
@@ -284,11 +304,16 @@ def deals(id=None):
         contact_id = request.json.get('contact_id')
 
         deal = Deal.query.get(id)
-        deal.plan = plan
-        deal.duration = duration
-        deal.description = description
-        deal.user_id = user_id
-        deal.contact_id = contact_id
+        if plan != None:
+            deal.plan = plan
+        if duration != None:
+            deal.duration = duration
+        if description != None:
+            deal.description = description
+        if user_id != None:
+            deal.user_id = user_id
+        if contact_id != None:
+            deal.contact_id = contact_id
 
         deal.update()
 
