@@ -1,7 +1,7 @@
 from Google import Create_Service
 
 
-def getMessageList():
+def getMessageList(tipo):
     list_id = []
     CLIENT_SECRET_FILE = 'client_secret.json'
     API_NAME = 'gmail'
@@ -11,7 +11,7 @@ def getMessageList():
     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
     messages = service.users().messages().list(userId='me', includeSpamTrash=False,
-                                               maxResults=25, pageToken='1', q='is:inbox').execute()
+                                               maxResults=25, pageToken='1', q=tipo).execute()
 
     for index, valor1 in enumerate(messages["messages"]):
         for llave, valor2 in valor1.items():
@@ -21,11 +21,11 @@ def getMessageList():
     return(messages["resultSizeEstimate"], list_id)
 
 
-def getContentMessages():
-    lista_completa = getMessageList()
+def getContentMessages(tipo):
+    lista_completa = getMessageList(tipo)
     lista_iterable = lista_completa[1]
 
-    print(lista_iterable[0])
+    # print(lista_iterable[0])
 
     CLIENT_SECRET_FILE = 'client_secret.json'
     API_NAME = 'gmail'
@@ -33,14 +33,45 @@ def getContentMessages():
     SCOPES = ['https://mail.google.com/']
 
     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
-    contenido_mensajes = service.users().messages().get(
-        userId='me', id=lista_iterable[0], format='full').execute()
+    lista_email = []
 
-    de = contenido_mensajes["payload"]["headers"][0]['value']
-    hora = contenido_mensajes["payload"]["headers"][1]['value']
-    body = contenido_mensajes["payload"]["parts"][1]['body']['data']
-    resumen = contenido_mensajes["snippet"]
+    if tipo == 'is:inbox':
+        for x in lista_iterable:
+            contenido_mensajes = service.users().messages().get(
+                userId='me', id=x, format='full').execute()
 
-    email = [de, hora, body, resumen]
+            de = contenido_mensajes["payload"]["headers"][0]['value']
+            hora = contenido_mensajes["payload"]["headers"][1]['value']
+            body = contenido_mensajes["payload"]["parts"][1]['body']['data']
+            resumen = contenido_mensajes["snippet"]
 
-    return(email)
+            email = [de, hora, body, resumen]
+            lista_email.append(email)
+    elif tipo == 'in:sent':
+        for x in lista_iterable:
+            contenido_mensajes = service.users().messages().get(
+                userId='me', id=x, format='full').execute()
+
+            para = contenido_mensajes["payload"]["headers"][5]['value']
+            hora = contenido_mensajes["payload"]["headers"][1]['value']
+            # body = contenido_mensajes["payload"]["parts"][1]['body']['data']
+            resumen = contenido_mensajes["payload"]["headers"][3]['value']
+
+            email = [para, hora, resumen]
+            lista_email.append(email)
+    elif tipo == 'is:unread':
+        for x in lista_iterable:
+            contenido_mensajes = service.users().messages().get(
+                userId='me', id=x, format='full').execute()
+
+            para = contenido_mensajes["payload"]["headers"][5]['value']
+            hora = contenido_mensajes["payload"]["headers"][1]['value']
+            # body = contenido_mensajes["payload"]["parts"][1]['body']['data']
+            resumen = contenido_mensajes["payload"]["headers"][3]['value']
+
+            email = [para, hora, resumen]
+            lista_email.append(email)
+    else:
+        pass
+
+    return(lista_email)

@@ -30,15 +30,21 @@ def main():
     return render_template('index.html')
 
 
-@app.route('/get_message_list', methods=['GET'])
+@app.route('/get_message_list', methods=['POST'])
 def getMessages():
-    messages = getMessageList()
+    request_body = request.data
+    decoded_object = json.loads(request_body)
+    tipo = decoded_object["tipo"]
+    messages = getMessageList(tipo)
     return jsonify(messages)
 
 
-@app.route('/get_message', methods=['GET'])
+@app.route('/get_message', methods=['POST'])
 def getMessages2():
-    messages = getContentMessages()
+    request_body = request.data
+    decoded_object = json.loads(request_body)
+    tipo = decoded_object["tipo"]
+    messages = getContentMessages(tipo)
     return jsonify(messages)
 
 
