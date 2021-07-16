@@ -12,6 +12,8 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 from werkzeug.security import check_password_hash, generate_password_hash
+from Get_Message_List import getMessageList, getContentMessages
+from Get_Profile import getProfile
 from Send_Email import sendEmail
 
 app = Flask(__name__)
@@ -27,6 +29,27 @@ jwt = JWTManager(app)
 @app.route('/')
 def main():
     return render_template('index.html')
+
+
+@app.route('/getProfile')
+def getProfile1():
+    profile = getProfile()
+    return jsonify(profile)
+
+
+@app.route('/get_message_list', methods=['GET'])
+def getMessages():
+    # request_body = request.data
+    # decoded_object = json.loads(request_body)
+    # tipo = decoded_object["tipo"]
+    messages = getMessageList()
+    return jsonify(messages)
+
+
+@app.route('/get_message', methods=['GET'])
+def getMessages2():
+    messages = getContentMessages()
+    return jsonify(messages)
 
 
 @app.route('/enviarCorreo', methods=['POST'])

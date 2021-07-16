@@ -1,14 +1,7 @@
-import json
-from flask import Flask, jsonify, request
-from flask_cors import CORS
-
 from Google import Create_Service
 import base64
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
-app = Flask(__name__)
-CORS(app)
 
 
 def sendEmail(to, Cc, subject, body):
