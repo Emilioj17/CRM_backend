@@ -22,8 +22,10 @@ def getMessageList():
 
 
 def getContentMessages():
-    lista_completa = getMessageList
+    lista_completa = getMessageList()
     lista_iterable = lista_completa[1]
+
+    print(lista_iterable[0])
 
     CLIENT_SECRET_FILE = 'client_secret.json'
     API_NAME = 'gmail'
@@ -34,4 +36,4 @@ def getContentMessages():
     contenido_mensajes = service.users().messages().get(
         userId='me', id=lista_iterable[0], format='full').execute()
 
-    print(contenido_mensajes)
+    return(contenido_mensajes)
