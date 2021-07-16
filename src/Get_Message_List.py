@@ -36,4 +36,11 @@ def getContentMessages():
     contenido_mensajes = service.users().messages().get(
         userId='me', id=lista_iterable[0], format='full').execute()
 
-    return(contenido_mensajes)
+    de = contenido_mensajes["payload"]["headers"][0]['value']
+    hora = contenido_mensajes["payload"]["headers"][1]['value']
+    body = contenido_mensajes["payload"]["parts"][1]['body']['data']
+    resumen = contenido_mensajes["snippet"]
+
+    email = [de, hora, body, resumen]
+
+    return(email)
