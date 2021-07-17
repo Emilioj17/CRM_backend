@@ -25,29 +25,33 @@ app.config["JWT_SECRET_KEY"] = "@alfa123@254alfacentaurizxcvbnm@123456789ASDFGHJ
 jwt = JWTManager(app)
 
 
+# Ruta sin usar
 @app.route('/')
 def main():
     return render_template('index.html')
 
 
+# Esta ruta no se utiliza, dejar de todas formas. Solo para chequeo de API ok.
 @app.route('/get_message_list', methods=['POST'])
 def getMessages():
     request_body = request.data
     decoded_object = json.loads(request_body)
     tipo = decoded_object["tipo"]
     messages = getMessageList(tipo)
-    return jsonify(messages)
+    return jsonify(messages), 201
 
 
+# Ruta para Obtener Mensajes. Tipo= 'in:unread', 'is:inbox', 'in:sent'. Segun tipo, se ejecutan distintas funciones.
 @app.route('/get_message', methods=['POST'])
 def getMessages2():
     request_body = request.data
     decoded_object = json.loads(request_body)
     tipo = decoded_object["tipo"]
     messages = getContentMessages(tipo)
-    return jsonify(messages)
+    return jsonify(messages), 201
 
 
+# Ruta para Enviar email
 @app.route('/enviarCorreo', methods=['POST'])
 def enviar():
     request_body = request.data
