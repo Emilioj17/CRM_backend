@@ -43,33 +43,36 @@ def getContentMessages(tipo):
             de = contenido_mensajes["payload"]["headers"][0]['value']
             hora = contenido_mensajes["payload"]["headers"][1]['value']
             body = contenido_mensajes["payload"]["parts"][1]['body']['data']
+            subject = contenido_mensajes["payload"]["headers"][19]['value']
             resumen = contenido_mensajes["snippet"]
 
-            email = [de, hora, body, resumen]
+            email = [de, hora, subject, body, resumen]
             lista_email.append(email)
     elif tipo == 'in:sent':
         for x in lista_iterable:
             contenido_mensajes = service.users().messages().get(
                 userId='me', id=x, format='full').execute()
 
-            para = contenido_mensajes["payload"]["headers"][5]['value']
+            subject = contenido_mensajes["payload"]["headers"][3]['value']
             hora = contenido_mensajes["payload"]["headers"][1]['value']
-            # body = contenido_mensajes["payload"]["parts"][1]['body']['data']
-            resumen = contenido_mensajes["payload"]["headers"][3]['value']
+            body = contenido_mensajes["payload"]["parts"][0]['body']['data']
+            para = contenido_mensajes["payload"]["headers"][5]['value']
+            resumen = contenido_mensajes["snippet"]
 
-            email = [para, hora, resumen]
+            email = [para, hora, subject, body, resumen]
             lista_email.append(email)
     elif tipo == 'is:unread':
         for x in lista_iterable:
             contenido_mensajes = service.users().messages().get(
                 userId='me', id=x, format='full').execute()
 
-            para = contenido_mensajes["payload"]["headers"][5]['value']
-            hora = contenido_mensajes["payload"]["headers"][1]['value']
-            # body = contenido_mensajes["payload"]["parts"][1]['body']['data']
+            de = contenido_mensajes["payload"]["headers"][16]['value']
+            hora = contenido_mensajes["payload"]["headers"][17]['value']
+            subject = contenido_mensajes["payload"]["headers"][19]['value']
             resumen = contenido_mensajes["payload"]["headers"][3]['value']
+            body = contenido_mensajes["payload"]["parts"][0]['body']['data']
 
-            email = [para, hora, resumen]
+            email = [de, hora, subject, body, resumen]
             lista_email.append(email)
     else:
         pass
