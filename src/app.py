@@ -75,7 +75,7 @@ def login_usuario():
     user = User.query.filter(email == User.email).first()
     if user is not None and check_password_hash(user.password, password):
         token = create_access_token(identity=password)
-        return jsonify(user.name, token), 200
+        return jsonify(user.serialize(), token), 200
     else:
         return jsonify({"Error": "Clave o Usuario incorrecto"}), 401
 
@@ -104,6 +104,7 @@ def create_acount():
 
 @app.route('/api/users', methods=['GET', 'POST'])
 @app.route('/api/users/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+# @jwt_required()
 def users(id=None):
 
     if request.method == 'GET':
@@ -179,6 +180,7 @@ def users(id=None):
 
 @app.route('/api/contacts', methods=['GET', 'POST'])
 @app.route('/api/contacts/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+# @jwt_required()
 def contacts(id=None):
 
     if request.method == 'GET':
@@ -251,6 +253,7 @@ def contacts(id=None):
 
 @app.route('/api/notes', methods=['GET', 'POST'])
 @app.route('/api/notes/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+# @jwt_required()
 def notes(id=None):
 
     if request.method == 'GET':
@@ -303,6 +306,7 @@ def notes(id=None):
 
 @app.route('/api/deals', methods=['GET', 'POST'])
 @app.route('/api/deals/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+# @jwt_required()
 def deals(id=None):
 
     if request.method == 'GET':
