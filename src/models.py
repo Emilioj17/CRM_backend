@@ -6,13 +6,14 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), nullable=False, unique=True)
-    password = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
     rut = db.Column(db.String(100), nullable=True)
     type = db.Column(db.String(100), default='Administrador')
-    estado = db.Column(db.String(100), default='Activo')
     phone = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False, unique=True)
+    password = db.Column(db.String(50), nullable=False)
+    imgB64 = db.Column(db.String, nullable=True)
+    estado = db.Column(db.String(100), default='Activo')
     create_at = db.Column(db.DATE, nullable=False)
     contacts = db.relationship(
         'Contact', cascade='all, delete', backref='user')
@@ -30,6 +31,7 @@ class User(db.Model):
             "estado": self.estado,
             "phone": self.phone,
             "email": self.email,
+            "imgB64": self.imgB64,
             "create_at": self.formatDate(),
             "contacts": self.get_contacts(),
             "deals": self.get_deals(),
