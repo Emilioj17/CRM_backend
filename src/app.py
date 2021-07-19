@@ -124,16 +124,18 @@ def users(id=None):
         phone = request.json.get('phone')
         email = request.json.get('email')
         password = request.json.get('password')
+        imgB64 = request.json.get('imgB64')
         create_at = datetime.now()
 
         user = User()
         user.name = name
         user.last_name = last_name
         user.rut = rut
-        user.password = generate_password_hash(password)
         user.type = type
         user.phone = phone
         user.email = email
+        user.password = generate_password_hash(password)
+        user.imgB64 = imgB64
         user.create_at = create_at
 
         user.save()
@@ -149,6 +151,7 @@ def users(id=None):
         phone = request.json.get('phone')
         email = request.json.get('email')
         password = request.json.get('password')
+        imgB64 = request.json.get('imgB64')
 
         user = User.query.get(id)
         if name != None:
@@ -167,6 +170,8 @@ def users(id=None):
             user.email = email
         if password != None:
             user.password = password
+        if imgB64 != None:
+            user.imgB64 = imgB64
 
         user.update()
 
