@@ -11,7 +11,7 @@ def getContentMessages(tipo):
 
     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
     messages = service.users().messages().list(userId='me', includeSpamTrash=False,
-                                               maxResults=25, pageToken='1', q=tipo).execute()
+                                               maxResults=10, pageToken='1', q=tipo).execute()
 
     for index, valor1 in enumerate(messages["messages"]):
         for llave, valor2 in valor1.items():
