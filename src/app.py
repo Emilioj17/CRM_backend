@@ -12,7 +12,7 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 from werkzeug.security import check_password_hash, generate_password_hash
-from Get_Message_List import getMessageList, getContentMessages
+from Get_Message_List import getContentMessages
 from Send_Email import sendEmail
 
 app = Flask(__name__)
@@ -29,16 +29,6 @@ jwt = JWTManager(app)
 @app.route('/')
 def main():
     return render_template('index.html')
-
-
-# Esta ruta no se utiliza, dejar de todas formas. Solo para chequeo de API ok.
-@app.route('/get_message_list', methods=['POST'])
-def getMessages():
-    request_body = request.data
-    decoded_object = json.loads(request_body)
-    tipo = decoded_object["tipo"]
-    messages = getMessageList(tipo)
-    return jsonify(messages), 201
 
 
 # Ruta para Obtener Mensajes. Tipo= 'in:unread', 'is:inbox', 'in:sent'. Segun tipo, se ejecutan distintas funciones.
