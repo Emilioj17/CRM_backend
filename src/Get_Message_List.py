@@ -25,7 +25,7 @@ def getContentMessages(tipo):
 
             for x in contenido_mensajes["payload"]["headers"]:
                 # Reply-To  Delivered-To
-                if x["name"] == "Reply-To":
+                if x["name"] == "From":
                     de = x["value"]
                 if x["name"] == "Date":
                     hora = x["value"]
