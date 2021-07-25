@@ -6,7 +6,7 @@ from flask import jsonify
 from flask import request
 from flask import render_template
 from flask_migrate import Migrate
-from models import Contact, Deal, Note, User, db
+from models import Contact, Deal, Event, Note, User, db
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
@@ -296,6 +296,65 @@ def notes(id=None):
     elif request.method == 'DELETE':
         note = Note.query.get(id)
         note.delete()
+        return jsonify({"success": "Note deleted"}), 200
+
+
+@app.route('/api/events', methods=['GET', 'POST'])
+@app.route('/api/events/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+# @jwt_required()
+def events(id=None):
+
+    if request.method == 'GET':
+        if id != None:
+            event = Event.query.get(id)
+            return jsonify(event.serialize()), 200
+        else:
+            events = Event.query.all()
+            events = list(map(lambda event: event.serialize(), events))
+            return jsonify(events), 200
+
+    elif request.method == 'POST':
+        comment = request.json.get('comment')
+        create_at = datetime.now()
+        date = request.json.get('date')
+        date = datetime.strptime(date, '%Y-%m-%d')
+        user_id = request.json.get('user_id')
+        contact_id = request.json.get('contact_id')
+
+        event = Event()
+        event.comment = comment
+        event.create_at = create_at
+        event.date = date
+        event.user_id = user_id
+        event.contact_id = contact_id
+
+        event.save()
+
+        return jsonify(event.serialize()), 201
+
+    elif request.method == 'PUT':
+        comment = request.json.get('comment')
+        date = request.json.get('date')
+        user_id = request.json.get('user_id')
+        contact_id = request.json.get('contact_id')
+
+        event = Event.query.get(id)
+        if comment != None:
+            event.comment = comment
+        if date != None:
+            event.date = date
+        if user_id != None:
+            event.user_id = user_id
+        if contact_id != None:
+            event.contact_id = contact_id
+
+        event.update()
+
+        return jsonify(event.serialize()), 201
+
+    elif request.method == 'DELETE':
+        event = Event.query.get(id)
+        event.delete()
         return jsonify({"success": "Note deleted"}), 200
 
 
