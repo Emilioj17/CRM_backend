@@ -22,6 +22,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db.init_app(app)
 Migrate(app, db)
 app.config["JWT_SECRET_KEY"] = "@alfa123@254alfacentaurizxcvbnm@123456789ASDFGHJKL"
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = "username@gmail.com"
+app.config['MAIL_PASSWORD'] = "password"
+msg = Message()
+msg.subject = "Email Subject"
+msg.recipients = ['recipient@gmail.com']
+msg.sender = 'username@gmail.com'
+msg.body = 'Email body'
+mail.send(msg)
+mail = Mail(app)
 jwt = JWTManager(app)
 
 
@@ -90,6 +102,38 @@ def create_acount():
     user.save()
 
     return jsonify(user.serialize), 201
+
+#@app.route('/password_reset', methods=['GET', 'POST'])
+#def reset():
+
+ #   if request.method == 'GET':
+  #      return render_template('reset.html')
+
+   # if request.method == 'POST':
+
+    #    email = request.form.get('email')
+     #   user = User.verify_email(email)
+
+      #  if user:
+       #     send_email(user)
+
+        #return redirect(url_for('app_routes.login'))
+
+#@app.route('/password_reset_verified/<token>', methods=['GET', 'POST'])
+#def reset_verified(token):
+
+ #   user = User.verify_reset_token(token)
+  #  if not user:
+   #     print('no user found')
+    #    return redirect(url_for('app_routes.login'))
+
+    #password = request.form.get('password')
+    #if password:
+     #   user.set_password(password, commit=True)
+
+      #  return redirect(url_for('app_routes.login'))
+
+    #return render_template('reset_verified.html')
 
 
 @app.route('/api/users', methods=['GET', 'POST'])

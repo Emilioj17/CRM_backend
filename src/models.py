@@ -39,6 +39,7 @@ class User(db.Model):
             "events": self.get_events()
         }
 
+
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -49,6 +50,20 @@ class User(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    #def get_reset_token(self, expires=500):
+     #   return jwt.encode({'reset_password': self.username, 'exp': time() + expires},
+      #                     key=os.getenv('SECRET_KEY_FLASK'))
+
+    #@staticmethod
+    #def verify_reset_token(token):
+     #   try:
+      #      username = jwt.decode(token, key=os.getenv('SECRET_KEY_FLASK'))['reset_password']
+       #     print(username)
+       # except Exception as e:
+        #    print(e)
+         #   return
+        #return User.query.filter_by(username=username).first()
 
     def get_contacts(self):
         contacts = list(
